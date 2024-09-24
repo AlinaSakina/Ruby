@@ -1,42 +1,47 @@
 def precedence(op)
   case op
-  when '+', '-'
-    1
-  when '*', '/'
-    2
-  else
-    0
+  when '+' then 1
+  when '-' then 1
+  when '*' then 2
+  when '/' then 2
+  else 0
   end
 end
 
-def is_operator?(c)
-  ['+', '-', '*', '/'].include?(c)
-end
-
-def to_rpn(expression)
+def infix_to_rpn(expression)
   output = []
   operators = []
 
-  expression.split.each do |token|
-    if token =~ /\d+/  
+  tokens = expression.scan(/\d+|[+\-*\/()]/)
+
+  tokens.each do |token|
+    if token =~ /\d/
       output << token
-    elsif is_operator?(token)
-      while operators.any? && precedence(operators.last) >= precedence(token)
+    elsif token == '('
+      operators.push(token)
+    elsif token == ')'
+      while operators.last != '('
         output << operators.pop
       end
-      operators << token
+      operators.pop
+    else
+      while !operators.empty? && precedence(operators.last) >= precedence(token)
+        output << operators.pop
+      end
+      operators.push(token)
     end
   end
 
-  while operators.any?
+  while !operators.empty?
     output << operators.pop
   end
 
   output.join(' ')
 end
 
-# Основна частина програми
-puts "Введіть математичний вираз (наприклад, '2 + 1 * 4'):"
+puts "Введіть математичний вираз (наприклад, 2 + 1 * 4):"
 input = gets.chomp
-output = to_rpn(input)
-puts "RPN: #{output}"
+output = infix_to_rpn(input)
+puts "Введений вираз: #{input}"
+puts "Вираз у RPN: #{output}"
+
