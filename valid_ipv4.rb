@@ -10,10 +10,8 @@ def valid_ipv4?(ip)
   end
 end
 
-
-# Приклад використання
-puts valid_ipv4?("192.168.0.1")    # true
-puts valid_ipv4?("255.255.255.255") # true
-puts valid_ipv4?("256.100.50.0")    # false
-puts valid_ipv4?("192.168.01.1")    # false (ведучий нуль)
-puts valid_ipv4?("23.168.0")       # false (менше ніж 4 сегменти)
+puts valid_ipv4?("192.168.0.1")
+puts valid_ipv4?("255.255.255.255")
+puts valid_ipv4?("256.100.50.0")
+puts valid_ipv4?("192.168.01.1")
+puts valid_ipv4?("23.168.0")
