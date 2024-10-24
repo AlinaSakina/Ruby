@@ -12,10 +12,10 @@ def infix_to_rpn(expression)
   output = []
   operators = []
 
-  tokens = expression.scan(/\d+|[+\-*\/()]/)
+  tokens = expression.scan(/-?\d+|[+\-*\/()]/)
 
   tokens.each do |token|
-    if token =~ /\d/
+    if token =~ /-?\d/
       output << token
     elsif token == '('
       operators.push(token)
@@ -39,9 +39,51 @@ def infix_to_rpn(expression)
   output.join(' ')
 end
 
-puts "Введіть математичний вираз (наприклад, 2 + 1 * 4):"
+def evaluate_rpn(rpn)
+  stack = []
+
+  tokens = rpn.split
+
+  tokens.each do |token|
+    if token =~ /-?\d/
+      stack.push(token.to_i)
+    else
+      b = stack.pop
+      a = stack.pop
+
+      case token
+      when '+'
+        stack.push(a + b)
+      when '-'
+        stack.push(a - b)
+      when '*'
+        stack.push(a * b)
+      when '/'
+        if b == 0
+          raise ZeroDivisionError, "Помилка: ділення на нуль!"
+        else
+          stack.push(a / b)
+        end
+      end
+    end
+  end
+
+  stack.pop
+end
+
+puts "Введіть математичний вираз (наприклад, 2 + 1 * -4):"
 input = gets.chomp
 output = infix_to_rpn(input)
-puts "Введений вираз: #{input}"
-puts "Вираз у RPN: #{output}"
+begin
+  puts "Введений вираз: #{input}"
+  puts "Вираз у RPN: #{output}"
+rescue ZeroDivisionError => e
+  puts e.message
+end
+
+
+
+
+
+
 
