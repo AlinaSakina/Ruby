@@ -10,8 +10,3 @@ def valid_ipv4?(ip)
   end
 end
 
-puts valid_ipv4?("192.168.0.1")
-puts valid_ipv4?("255.255.255.255")
-puts valid_ipv4?("256.100.50.0")
-puts valid_ipv4?("192.168.01.1")
-puts valid_ipv4?("23.168.0")
